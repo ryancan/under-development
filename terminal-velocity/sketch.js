@@ -19,16 +19,16 @@ function setup() {
 
   g = -9.81;//m/s2
   mass = createSlider(1,25,5);//kg
-  mass.position(50,300);
+  mass.position(50,290);
   //massText = createDiv('Use this slider to change mass');
   //massText.position(350,800);
   rho = createSlider(1,30,1);
-  rho.position(50,330);//kg/m3
+  rho.position(50,320);//kg/m3
   //rhoText = createDiv('Use this to change density of fluid medium');
   //rhoText.position(10,800);
   Cd = .15;//dimensionless
   R = createSlider(0.2,0.5,0.25,0.05);//m
-  R.position(50,360);
+  R.position(50,350);
   //Rtext = createDiv('Use this to change radius of sphere');
   //Rtext.position(200,200);
   A = PI*(R.value()*R.value());//m2 - half the surface area of a sphere
