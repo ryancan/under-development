@@ -15,14 +15,14 @@ function setup() {
   canvas = createCanvas(800, 500);
   canvas.parent('sketch-holder');
 
-  equation = loadImage("/drag_equation.jpeg")
+  equation = loadImage("/drag_equation.jpeg");
 
   g = -9.81;//m/s2
-  mass = createSlider(1,10,5);//kg
+  mass = createSlider(1,25,5);//kg
   mass.position(50,330);
   //massText = createDiv('Use this slider to change mass');
   //massText.position(350,800);
-  rho = createSlider(0,100,1.225);
+  rho = createSlider(1,30,1);
   rho.position(50,360);//kg/m3
   //rhoText = createDiv('Use this to change density of fluid medium');
   //rhoText.position(10,800);
@@ -87,6 +87,9 @@ function draw() {
     drag.y = ((rho.value())*(Cd)*(A)*((bg.velocity.y)*(bg.velocity.y)))/2; //mimics real drag equation, scalar quantity
     bg.acceleration = createVector(0,-(weight.y-drag.y)/mass.value());//accel must be negative to mimic falling in science lib
 
+    if (abs(drag.y) > abs(weight.y)){
+      drag.y = abs(weight.y);
+    }
 
     bg.update();
     bg.display();
@@ -115,7 +118,9 @@ function draw() {
   text("Mass: "+mass.value()+" kg",225,150);
   text("Fluid Density: "+rho.value()+" kg/m^3",225,180);
   text("Sphere Radius: "+R.value()+" m",225,210);
-  text("Frontal Area: "+A+" m^2",225,240);
+  text("Frontal Area: "+A.toFixed(2)+" m^2",225,240);
+
+  text("Velocity: "+bg.velocity.y.toFixed(2)+"m/s",150,300);
 
 image(equation,100,400,10,10);//not showing up??
 
@@ -129,5 +134,8 @@ console.log(drag.y)
 }
 function run() {
 loop();
+if (bg.velocity.y < 0){
+  bg.velocity.y = 0;
+}
 //  bg.velocity = createVector(0+bg.acceleration.x,0+bg.acceleration.y);
 }
