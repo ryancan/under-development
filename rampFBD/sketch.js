@@ -1,16 +1,5 @@
-var rampSlider;
-var theta;
-var thetaVal;
-var m;
-var g;
-var boxAccl;
-var boxVel;
-var boxPos;
-var reset;
-var mu;
-var friction;
-var rampGrav;
 
+var center, weight;
 
 function setup(){
   createCanvas(700,500);
@@ -19,6 +8,7 @@ function setup(){
   m = 5;//mass of block
   g = 0.0981;//gravity
   mu = .3;//coefficient of static friction
+  weight = new createVector(0,m*g*250);
 
   //slider used to add/subtract y-value to apex of triangle, thus changing the angle of ramp
   rampSlider = createSlider(-150,150,0);
@@ -34,15 +24,20 @@ function setup(){
   //calculate middle of incline as vector so that those coordinates can be used to draw the box
   center = new createVector((apex.x+rightCorner.x)/2,(apex.y+rightCorner.y)/2);
 
-  boxAccl = new createVector(0,0);
+  friction = m*mu*g*cos(theta);
+  rampGrav = m*g*sin(theta);
+
+  //where x-dir is parallel to ramp and y-dir is normal to ramp
+  boxAccl = new createVector((rampGrav-friction)/m,0);
   boxVel = 0;
   boxPos = 0;
 
-//  gravVec = new Arrow(center,p5.Vector.add(center,boxAccl));
-//  gravVec.color="purple";
-//  gravVec.grab = false;
-//  gravVec.draggable = false;
-//  gravVec.showComponents = false;
+  gravEnd = p5.Vector.add(center,weight)
+  gravVec = new Arrow(center,gravEnd);
+  gravVec.color= color('red');
+  gravVec.grab = false;
+  gravVec.draggable = false;
+  gravVec.showComponents = false;
 
   //trying to use science lib fbd on box
 //  box_fbd = new FBD(center,4,true);
@@ -60,11 +55,13 @@ reset2 = function(){
 }
 
 function draw(){
+  angleMode(DEGREES);
   background('blue');
   strokeWeight(1);
   rectMode(CORNER);
   fill('green');
   rect(0,400,700,100); //just some scenic grass
+
 
   //coordinates again of triangle ramp and box location
   rightCorner = new createVector(600,400);
@@ -78,14 +75,16 @@ function draw(){
   friction = m*mu*g*cos(theta);
   rampGrav = m*g*sin(theta);
 
+  //keeps box in equilibrium untill gravity overcomes friction
   if (friction > rampGrav){
     friction = rampGrav;
   };
 
-  boxAccl = new createVector(0,(rampGrav-friction)/m);
+  //where x-dir is parallel to ramp and y-dir is normal to ramp
+  boxAccl = new createVector((rampGrav-friction)/m,0);
   //vector was not used for velocity here because the box only moves uni-directionly along ramp
   //this however should be changed and vectors should be used.....
-  boxVel = boxVel + boxAccl.y;
+  boxVel = boxVel + boxAccl.x;
   boxPos = boxPos + boxVel;
 
   //draw the ramp
@@ -95,7 +94,7 @@ function draw(){
   //angle text output
   //how to limit sig figs ???
   fill('white');
-  text("Angle = "+theta+" degrees",450,450);
+  text("Angle of Ramp = "+theta.toFixed(2)+" degrees",400,450);
 
   rectMode(CENTER);
   fill('brown');
@@ -111,10 +110,8 @@ function draw(){
   if(boxPos > 200){
     boxPos=205;
     boxVel = 0;
-    boxAccl = 0;
+    boxAccl = new createVector(0,0);
   };
-
-  angleMode(DEGREES);
 
 //  box_fbd.mag = [550*g,friction,rampGrav,friction/mu];
 //  box_fbd.direction = [90,180+theta,-1*theta,theta];
@@ -126,8 +123,12 @@ function draw(){
 //  box_fbd.update();
 //  box_fbd.display();
 
- //gravVec.target = p5.Vector.add(center,p5.Vector.mult(g,1000));
-//  gravVec.update();
-//  gravVec.display();
+// gravVec.target = p5.Vector.add(center,p5.Vector.mult(weight,1));
 
+ gravVec.update();
+ gravVec.display();
+
+ console.log(weight)
+ console.log(gravVec.origin)
+ console.log(gravVec.target)
 }
