@@ -12,7 +12,7 @@ function setup(){
   momentArm = new Arrow(center,pointApplied);
   momentArm.color = color('blue');
   momentArm.width = 10;
-  momentArm.showComponents = true;
+  momentArm.showComponents = false;
   momentArm.draggable = false;
   momentArm.grab = false;
   force1 = new Arrow(pointApplied,end);
