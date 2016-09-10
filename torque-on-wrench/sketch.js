@@ -25,10 +25,17 @@ function setup(){
 function draw(){
   background('white');
 
+
   fill('grey');
   rect(200,250,300,50);
-  polygon(center.x,center.y,75,6);
+  polygon(center.x,center.y,80,6);
+  fill('white');
+  noStroke();
+  rect(70,250,110,50);
+  fill(150,20,40);
+  polygon(center.x,center.y,30,6);
 
+  stroke(1);
 
   momentArm.update();
   force1.update();
@@ -36,9 +43,18 @@ function draw(){
   force1.display();
   torque = (force1.target.y-force1.origin.y).toFixed(0)*pointApplied_x.value()/10;
 
+  fill('black');
+  text("The blue arrow is the position vector corresponding to the moment arm",50,20);
+  text("The red arrow is the force vector",50,35);
   text("Torque= "+torque.toFixed(0)+" N-cm",500,400);
   text("Moment Arm Length= "+(pointApplied_x.value()/10).toFixed(0)+" cm",400,100);
-
+  if (torque > 0){
+    text("The bolt will tighten",200,400);
+  } else if (torque < 0){
+    text("The bolt will loosen",200,400);
+  } else{
+    text("The bolt will not move! No moment applied!",200,400);
+}
 }
 
 //taken from p5.js examples
