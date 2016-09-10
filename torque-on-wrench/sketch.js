@@ -58,12 +58,12 @@ function draw(){
   text("Moment Arm Length= "+(pointApplied_x.value()/10).toFixed(0)+" cm",400,100);
 
 
-  if (torque > 0){
-    text("The bolt will tighten",200,400);
-  } else if (torque < 0){
-    text("The bolt will loosen",200,400);
+  if (torque < 0){
+    text("The bolt will tighten (Negative Toqrue, going into screen along -z axis)",50,400);
+  } else if (torque > 0){
+    text("The bolt will loosen(Positive Torque, coming out of screen along +z axis)",50,400);
   } else{
-    text("The bolt will not move! No moment applied!",200,400);
+    text("The bolt will not move! No moment applied!",50,400);
 }
 }
 
