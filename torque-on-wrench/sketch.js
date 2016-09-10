@@ -49,7 +49,7 @@ function draw(){
   force1.display();
 
   //Calculate Torque
-  torque = (force1.target.y-force1.origin.y).toFixed(0)*pointApplied_x.value()/10;
+  torque = -1*(force1.target.y-force1.origin.y).toFixed(0)*pointApplied_x.value()/10;
 
   fill('black');
   text("The blue arrow is the position vector corresponding to the moment arm",50,20);
