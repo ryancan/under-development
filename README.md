@@ -6,3 +6,6 @@ A sim in development to demonstrate how a box behaves on an adjustable ramp. The
 
 #Projectile-vs-Freefall
 A simple sim in developmentment to convey the concept that a horizontal velocity will not affect the the rate at which a body falls. Currently problems with acceleration within science lib and/or sketch.
+
+#Torque on Wrench
+A sim demonstrating how length of moment arm and magnitude and direction of applied force affect the produced torque. User uses a slider to change moment arm length and controls applied force my dragging force vector arrow tip.
