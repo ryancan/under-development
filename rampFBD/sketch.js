@@ -75,17 +75,33 @@ function draw(){
   friction = m*mu*g*cos(theta);
   rampGrav = m*g*sin(theta);
 
+  gravVec = new Arrow(center,gravEnd);
+  gravVec.color= color('red');
+  gravVec.grab = false;
+  gravVec.draggable = false;
+  gravVec.showComponents = false;
+
   //keeps box in equilibrium untill gravity overcomes friction
   if (friction > rampGrav){
     friction = rampGrav;
   };
 
   //where x-dir is parallel to ramp and y-dir is normal to ramp
+  //takes care of stopping sliding if ramp is lowered
+  if (friction < rampGrav){
+      boxVel = boxVel + boxAccl.x;
+  } else{
+    boxVel = 0;
+  }
   boxAccl = new createVector((rampGrav-friction)/m,0);
   //vector was not used for velocity here because the box only moves uni-directionly along ramp
   //this however should be changed and vectors should be used.....
-  boxVel = boxVel + boxAccl.x;
+
   boxPos = boxPos + boxVel;
+
+//  if (friction = rampGrav){
+  //  boxVel = 0;
+//  };
 
   //draw the ramp
   fill('tan');
@@ -128,7 +144,7 @@ function draw(){
  gravVec.update();
  gravVec.display();
 
- console.log(weight)
- console.log(gravVec.origin)
- console.log(gravVec.target)
+ console.log(boxVel)
+ //console.log(gravVec.origin)
+ //console.log(gravVec.target)
 }
