@@ -18,17 +18,17 @@ function setup() {
   equation = loadImage("/drag_equation.jpeg");
 
   g = -9.81;//m/s2
-  mass = createSlider(1,25,5);//kg
-  mass.position(50,290);
+  mass = createSlider(1,10,5);//kg
+  mass.position(50,330);
   //massText = createDiv('Use this slider to change mass');
   //massText.position(350,800);
-  rho = createSlider(1,30,1);
-  rho.position(50,320);//kg/m3
+  rho = createSlider(1,5,1);
+  rho.position(50,360);//kg/m3
   //rhoText = createDiv('Use this to change density of fluid medium');
   //rhoText.position(10,800);
-  Cd = .15;//dimensionless
-  R = createSlider(0.2,0.5,0.25,0.05);//m
-  R.position(50,350);
+  Cd = .1;//dimensionless
+  R = createSlider(0.1,0.25,0.15,0.05);//m
+  R.position(50,390);
   //Rtext = createDiv('Use this to change radius of sphere');
   //Rtext.position(200,200);
   A = PI*(R.value()*R.value());//m2 - half the surface area of a sphere
@@ -87,16 +87,20 @@ function draw() {
     drag.y = ((rho.value())*(Cd)*(A)*((bg.velocity.y)*(bg.velocity.y)))/2; //mimics real drag equation, scalar quantity
     bg.acceleration = createVector(0,-(weight.y-drag.y)/mass.value());//accel must be negative to mimic falling in science lib
 
-    if (abs(drag.y) > abs(weight.y)){
-      drag.y = abs(weight.y);
-    }
-
     bg.update();
     bg.display();
 
+    if (drag.y > weight.y){
+      drag.y = weight.y;
+      bg.acceleration.y = 0;
+    };
+
+  fill('orange');
+  ellipse(center.x,center.y,R.value()*300,R.value()*300);//scale size of ball to mass
+
   rectMode(CORNER);
   push();
-  velVec.target = p5.Vector.add(center,p5.Vector.mult(bg.velocity,-2));//cloud vel positive, ball falling needs to be made negative
+  velVec.target = p5.Vector.add(center,p5.Vector.mult(bg.velocity,-1));//cloud vel positive, ball falling needs to be made negative
   velVec.update();
   velVec.display();
   pop();
@@ -108,8 +112,7 @@ function draw() {
   accelVec.target = p5.Vector.add(center,p5.Vector.mult(bg.acceleration,-1*mass.value()));//really force vector, multiplied by mass to be equivalent with weight vec at start of sim
   accelVec.update();
   accelVec.display();
-  fill('orange');
-  ellipse(center.x,center.y,R.value()*100,R.value()*100);//scale size of ball to mass
+
 
   fill('white');
   rect(0,0,370,500);
@@ -122,9 +125,7 @@ function draw() {
 
   text("Velocity: "+bg.velocity.y.toFixed(2)+"m/s",150,300);
 
-image(equation,100,400,10,10);//not showing up??
-
-
+  image(equation,100,400,equation.width*100,equation.height*100);//not showing up??
 
 
 console.log(weight.y)
