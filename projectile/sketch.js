@@ -16,14 +16,24 @@ fetch.mousePressed(fetchBall);
 initialPos = createVector(50,340);
 initialVel = createVector(0,0);
 g = createVector(0,0);
-projectile = new Mover(initialPos, initialVel, g, 20, 'orange');
+projectile = new KineticMass(initialPos, initialVel, g, 20, 'orange');
 projectile.tail = true;
-projectile.limit = 50;
+projectile.limit = 10;
+projectile.tailFill = color('white');
+projectile.tailStroke = color('white');
+
 
 velVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,projectile.velocity));
 velVec.color = color('red');
 velVec.grab = true;
 velVec.draggable = false;
+velVec.width = 10;
+
+gravVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,projectile.acceleration));
+gravVec.color = color('purple');
+gravVec.grab = false;
+gravVec.draggable = false;
+gravVec.width = 10;
 
 }
 
@@ -42,20 +52,30 @@ if (projectile.velocity.x == 0 && projectile.velocity.y == 0){
 }else{
   velVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,projectile.velocity));
   velVec.grab = false;
+  gravVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,projectile.acceleration));
+
+  push();
+  gravVec.target.add(0,50);
+  pop();
 };
 
 velVec.color = color('red');
+gravVec.color = color('purple');
+velVec.width = 10;
+gravVec.width = 10;
 
+
+gravVec.update();
+gravVec.display();
 velVec.update();
 velVec.display();
-
 
 }
 
 function initiate(){
   projectile.velocity = createVector(velVec.target.x-velVec.origin.x, velVec.target.y-velVec.origin.y);
   p5.Vector.mult(projectile.velocity,.1);
-  projectile.acceleration = createVector(0,.981);
+  projectile.acceleration = createVector(0,.981/5);
 }
 
 function fetchBall() {
