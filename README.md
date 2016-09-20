@@ -9,3 +9,6 @@ A simple sim in developmentment to convey the concept that a horizontal velocity
 
 #Torque on Wrench
 A sim demonstrating how length of moment arm and magnitude and direction of applied force affect the produced torque. User uses a slider to change moment arm length and controls applied force my dragging force vector arrow tip.
+
+#Projectile
+Sim demonstrating projectile motion. User drags vector to set initial velocity and presses button to initiate. Still in first stages of development. Scaling of arrow object magnitude and mover object's (projectile's) velocity needs tweaking. Need to add and scale in (gravitational) acceleration vector.
