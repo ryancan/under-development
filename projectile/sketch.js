@@ -15,8 +15,8 @@ fetch.mousePressed(fetchBall);
 
 initialPos = createVector(50,340);
 initialVel = createVector(0,0);
-g = createVector(0,0);
-projectile = new KineticMass(initialPos, initialVel, g, 20, 'orange');
+no_g = createVector(0,0);
+projectile = new KineticMass(initialPos, initialVel, no_g, 20, 'orange');
 projectile.tail = true;
 projectile.limit = 10;
 projectile.tailFill = color('white');
@@ -55,7 +55,8 @@ if (projectile.velocity.x == 0 && projectile.velocity.y == 0){
   gravVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,projectile.acceleration));
 
   push();
-  gravVec.target.add(0,50);
+  velVec.target = p5.Vector.add(projectile.position,p5.Vector.mult(projectile.velocity,10));
+  gravVec.target = p5.Vector.add(projectile.position,p5.Vector.mult(projectile.acceleration,300));
   pop();
 };
 
@@ -70,11 +71,12 @@ gravVec.display();
 velVec.update();
 velVec.display();
 
+
 }
 
 function initiate(){
   projectile.velocity = createVector(velVec.target.x-velVec.origin.x, velVec.target.y-velVec.origin.y);
-  p5.Vector.mult(projectile.velocity,.1);
+  p5.Vector.mult(projectile.velocity,.01);
   projectile.acceleration = createVector(0,.981/5);
 }
 
@@ -83,8 +85,11 @@ function fetchBall() {
   projectile.position.y = initialPos.y;
   projectile.velocity.x = initialVel.x;
   projectile.velocity.y = initialVel.y;
-  projectile.acceleration.x = g.x;
-  projectile.acceleration.y = g.y;
+  projectile.acceleration.x = no_g.x;
+  projectile.acceleration.y = no_g.y;
   velVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,projectile.velocity));
   velVec.draggable = false;
+  gravVec = new Arrow(projectile.position,p5.Vector.add(projectile.position,no_g));
+  gravVec.grab = false;
+  gravVec.draggable = false;
 }
