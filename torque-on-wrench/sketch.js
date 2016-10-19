@@ -34,6 +34,8 @@ function draw(){
   line(85,300,180,300);
   line(180,250,180,300);
 
+  line(center.x,center.y,center.x+100+pointApplied_x.value(),center.y);
+
   stroke(1);
   pointApplied = createVector(center.x+pointApplied_x.value(),center.y);
 
@@ -80,7 +82,10 @@ function draw(){
   text("Torque = "+torque.toFixed(0)+" N-m",100,50);
   text("Position Vector (r) = "+(pointApplied_x.value()/10).toFixed(0)+" cm",100,100);
   text("F",force1.target.x+15,force1.target.y+15);
-  text("r",positionVector.target.x-20,positionVector.target.y+15);
+  text("r",positionVector.target.x-75,positionVector.target.y+12);
+  if (phi != 0){
+    text("\u03A6",pointApplied.x+20,pointApplied.y-5);
+  }
 
 //draw torque vector into or out of page at center of nut/bolt
   if (torque < 0){
@@ -96,6 +101,22 @@ function draw(){
     noFill();
     arc(center.x, center.y, 30, 30, 0, TWO_PI);
   }
+
+  //drawing angle phi
+  stroke('purple');
+  if (torque < 0 && force1.target.x >= positionVector.target.x){
+    arc(pointApplied.x,pointApplied.y,75,75,phi,0);
+  } else if (torque < 0 && force1.target.x < positionVector.target.x){
+    arc(pointApplied.x,pointApplied.y,75,75,PI-phi,0);
+  } else if (torque > 0 && force1.target.x >= positionVector.target.x){
+    arc(pointApplied.x,pointApplied.y,75,75,phi,0);
+  } else if (torque > 0 && force1.target.x < positionVector.target.x){
+    arc(pointApplied.x,pointApplied.y,75,75,PI-phi,0);
+  };
+
+  stroke('black');
+
+  console.log(phi)
 }
 
 //taken from p5.js examples
