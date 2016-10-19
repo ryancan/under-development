@@ -7,7 +7,7 @@ function setup(){
 //Create some vectors, arrows, and a slider
   center = createVector(150,275);
   pointApplied_x = createSlider(0,350,300,10);
-  pointApplied_x.position(80,100,200);
+  pointApplied_x.position(80,30);
   end = createVector(450,450);
   pointApplied = createVector(center.x+pointApplied_x.value(),center.y);
   positionVector = new Arrow(center,pointApplied);
@@ -78,14 +78,32 @@ function draw(){
 
 
   fill('black');
-  text("Applied Force (F) = "+force1mag.toFixed(0)+" N",100,20);
-  text("Torque = "+torque.toFixed(0)+" N-m",100,50);
-  text("Position Vector (r) = "+(pointApplied_x.value()/10).toFixed(0)+" cm",100,100);
+  text("Applied Force (F) = "+force1mag.toFixed(0)+" N",100,100);
+  text("Torque = "+torque.toFixed(0)+" N-m",100,120);
+  text("Position Vector (r) = "+(pointApplied_x.value()/10).toFixed(0)+" cm",100,20);
   text("F",force1.target.x+15,force1.target.y+15);
   text("r",positionVector.target.x-75,positionVector.target.y+12);
-  if (phi != 0){
+  if (phi != 0 ){
     text("\u03A6",pointApplied.x+20,pointApplied.y-5);
-  }
+  } else if (phi==0 && force1.target.x < positionVector.target.x){
+    text("\u03A6",pointApplied.x+20,pointApplied.y-5);
+  };
+
+//conditionals to properly display angle phi in degrees
+//depending which of its own quadrants the force vector lies in
+  if (torque < 0 && force1.target.x >= positionVector.target.x){
+    text("Angle \u03A6 = "+abs((2*PI-phi)*180/PI).toFixed(2)+" degrees",100,80);
+  } else if (torque < 0 && force1.target.x < positionVector.target.x){
+    text("Angle \u03A6 = "+abs((phi+PI)*180/PI).toFixed(2)+" degrees",100,80);
+  } else if (torque > 0 && force1.target.x >= positionVector.target.x){
+    text("Angle \u03A6 = "+abs((phi)*180/PI).toFixed(2)+" degrees",100,80);
+  } else if (torque > 0 && force1.target.x < positionVector.target.x){
+    text("Angle \u03A6 = "+abs((phi+PI)*180/PI).toFixed(2)+" degrees",100,80);
+  } else if (torque == 0 && force1.target.x > positionVector.target.x){
+    text("Angle \u03A6 = "+0+" degrees",100,80);
+  }  else if (torque == 0 && force1.target.x < positionVector.target.x){
+  text("Angle \u03A6 = "+180+" degrees",100,80);
+};
 
 //draw torque vector into or out of page at center of nut/bolt
   if (torque < 0){
@@ -103,6 +121,7 @@ function draw(){
   }
 
   //drawing angle phi
+  noFill();
   stroke('purple');
   if (torque < 0 && force1.target.x >= positionVector.target.x){
     arc(pointApplied.x,pointApplied.y,75,75,phi,0);
@@ -112,9 +131,12 @@ function draw(){
     arc(pointApplied.x,pointApplied.y,75,75,phi,0);
   } else if (torque > 0 && force1.target.x < positionVector.target.x){
     arc(pointApplied.x,pointApplied.y,75,75,PI-phi,0);
+  } else if (torque == 0 && force1.target.x <positionVector.target.x){
+    arc(pointApplied.x,pointApplied.y,75,75,PI-phi,0);
   };
 
   stroke('black');
+
 
   console.log(phi)
 }
