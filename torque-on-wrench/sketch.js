@@ -73,13 +73,13 @@ function draw(){
   force1mag = dist(force1.origin.x,force1.origin.y,force1.target.x,force1.target.y);
 
   //Calculate Torque
-  torque = -1*sin(phi)*force1mag*pointApplied_x.value()/100;
-  //when pointApplied_x.val = 100 , take to be 100mm, divide by 100 for N-m torque calculation
+  torque = -1*sin(phi)*force1mag*pointApplied_x.value()/1000;
+  //when pointApplied_x.val = 100 , take to be 10cm, divide by 1000 for N-m torque calculation
 
 
   fill('black');
   text("Applied Force (F) = "+force1mag.toFixed(0)+" N",100,100);
-  text("Torque = "+torque.toFixed(0)+" N-m",100,120);
+  text("Torque = "+torque.toFixed(1)+" N-m",100,120);
   text("Position Vector (r) = "+(pointApplied_x.value()/10).toFixed(0)+" cm",100,20);
   text("F",force1.target.x+15,force1.target.y+15);
   text("r",positionVector.target.x-75,positionVector.target.y+12);
