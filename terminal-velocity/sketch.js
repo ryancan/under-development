@@ -19,16 +19,16 @@ function setup() {
 
   g = -9.81;//m/s2
   mass = createSlider(1,10,5);//kg
-  mass.position(50,330);
+  mass.position(50,290);
   //massText = createDiv('Use this slider to change mass');
   //massText.position(350,800);
   rho = createSlider(1,5,1);
-  rho.position(50,360);//kg/m3
+  rho.position(50,320);//kg/m3
   //rhoText = createDiv('Use this to change density of fluid medium');
   //rhoText.position(10,800);
   Cd = .1;//dimensionless
   R = createSlider(0.1,0.25,0.15,0.05);//m
-  R.position(50,390);
+  R.position(50,350);
   //Rtext = createDiv('Use this to change radius of sphere');
   //Rtext.position(200,200);
   A = PI*(R.value()*R.value());//m2 - half the surface area of a sphere
@@ -84,17 +84,24 @@ function draw() {
     weight = createVector(0,-(mass.value()*g));
     A = PI*(R.value()*R.value());//m2 - half the surface area of a sphere
 
-    drag.y = ((rho.value())*(Cd)*(A)*((bg.velocity.y)*(bg.velocity.y)))/2; //mimics real drag equation, scalar quantity
     bg.acceleration = createVector(0,-(weight.y-drag.y)/mass.value());//accel must be negative to mimic falling in science lib
+    drag.y = ((rho.value())*(Cd)*(A)*((bg.velocity.y)*(bg.velocity.y)))/2; //mimics real drag equation, scalar quantity
+
 
     bg.update();
     bg.display();
+
 
     if (drag.y > weight.y){
       drag.y = weight.y;
       bg.acceleration.y = 0;
     };
-
+/*
+//keeping velocity=0 when page is loaded
+    if (drag.y == 0){
+      bg.velocity.y = 0;
+    };
+*/
   fill('orange');
   ellipse(center.x,center.y,R.value()*300,R.value()*300);//scale size of ball to mass
 
@@ -133,6 +140,7 @@ console.log(bg.velocity.y)
 console.log(bg.acceleration.y)
 console.log(drag.y)
 }
+
 function run() {
 loop();
 if (bg.velocity.y < 0){
