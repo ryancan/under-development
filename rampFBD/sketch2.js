@@ -43,7 +43,7 @@ function setup(){
   reset.position(200,200);
   reset.mousePressed(reset2);
 
-  frameRate(15);
+ // frameRate(15);
 }
 
 //resets the box to middle of ramp and gives it 0 velocity and acceleration
